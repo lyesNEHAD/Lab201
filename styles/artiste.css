@@ -99,6 +99,13 @@ body {
     padding: 3rem 1.5rem;
   }
 
+  .photo-wrap,
+  .photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
   .pink-block {
     right: 0;
     bottom: -2rem;

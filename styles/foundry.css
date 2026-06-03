@@ -307,9 +307,39 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
+  .page {
+    padding: 2rem 1.2rem 1.5rem;
+  }
+
   .album-section {
     grid-template-columns: 1fr;
   }
-  .album-cover { width: 100%; height: 300px; }
-  .cover-art { height: 300px; }
+
+  .album-cover {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .cover-art {
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .album-title {
+    font-size: 1.8rem;
+  }
+
+  .other-albums {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-cover {
+    width: 140px;
+    height: 140px;
+  }
 }
