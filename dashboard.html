@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Foundry — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body class="page-dashboard">
+
+  <!-- ══════════════════════════════════════════
+       TOP BAR
+  ══════════════════════════════════════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-name">Foundry</span>
+      <div class="topbar-sep"></div>
+      <span class="topbar-section">Administration</span>
+    </div>
+    <div class="topbar-right">
+      <div class="firebase-status">
+        <span class="fb-dot"></span>
+        <span>Firebase connecté</span>
+      </div>
+      <span class="admin-badge">Admin</span>
+      <button class="btn-logout" id="logout-btn">Déconnexion</button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════
+       MAIN LAYOUT
+  ══════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">Navigation</div>
+
+      <button class="nav-item active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        Dates de tournée
+      </button>
+
+      
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card highlight">
+          <div class="stat-label">Total dates</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">toutes les dates</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">À venir</div>
+          <div class="stat-value" id="stat-upcoming">—</div>
+          <div class="stat-sub">prochains concerts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Sold-out</div>
+          <div class="stat-value" id="stat-soldout">—</div>
+          <div class="stat-sub">complet</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pays</div>
+          <div class="stat-value" id="stat-countries">—</div>
+          <div class="stat-sub">destinations</div>
+        </div>
+      </div>
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dates de tournée</div>
+          <div class="page-subtitle">Gérez les concerts et événements de Yu Su</div>
+        </div>
+        <button class="btn-add" id="btn-add-date">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Ajouter une date
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <span class="table-toolbar-title">Toutes les dates</span>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="search-input" type="text" placeholder="Rechercher…"/>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Événement</th>
+              <th>Ville</th>
+              <th>Lieu / Festival</th>
+              <th>Statut</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dates-tbody">
+            <tr class="loading-row">
+              <td colspan="6">
+                <div class="spinner"></div>
+                Chargement…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL — Add / Edit
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-title">Ajouter une date</span>
+        <button class="modal-close" id="modal-close">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-form">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="f-date">Date du concert</label>
+            <input class="field-input" id="f-date" type="date"/>
+          </div>
+          <div class="field-group">
+  <label class="field-label" for="f-pays">Pays</label>
+
+  <input
+    class="field-input"
+    id="f-pays"
+    type="text"
+    placeholder="France"
+    list="countries-list"
+  />
+
+  <datalist id="countries-list">
+    <option value="France">
+    <option value="Belgique">
+    <option value="Suisse">
+    <option value="Canada">
+    <option value="Espagne">
+    <option value="Italie">
+    <option value="USA">
+  </datalist>
+
+</div>
+        </div>
+
+        <div class="field-group">
+  <label class="field-label" for="f-ville">Ville</label>
+
+  <input
+    class="field-input"
+    id="f-ville"
+    type="text"
+    placeholder="Paris"
+    list="cities-list"
+  />
+
+  <datalist id="cities-list"></datalist>
+
+</div>
+
+        <div class="field-group">
+          <label class="field-label" for="f-lieu">Lieu / Nom du festival</label>
+          <input class="field-input" id="f-lieu" type="text" placeholder="La Cigale"/>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="f-event">Nom de l'événement</label>
+          <input class="field-input" id="f-event" type="text" placeholder="Lorem Ipsum Festival"/>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="f-tickets">Lien billetterie</label>
+          <input class="field-input" id="f-tickets" type="url" placeholder="https://tickets.com/..."/>
+        </div>
+
+        <div class="toggle-field">
+          <div class="toggle-label-wrap">
+            <span class="toggle-label">Sold-out</span>
+            <span class="toggle-hint">Le concert affichera « Complet » sur le site</span>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="f-soldout"/>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" id="modal-cancel">Annuler</button>
+        <button class="btn-save" id="modal-save">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL — Confirm delete
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="confirm-overlay">
+    <div class="confirm-modal">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </div>
+      <div class="confirm-title">Supprimer cette date ?</div>
+      <div class="confirm-desc">Cette action est irréversible. La date sera définitivement supprimée de la base de données Firebase.</div>
+      <div class="confirm-btns">
+        <button class="btn-cancel" id="confirm-cancel">Annuler</button>
+        <button class="btn-danger" id="confirm-delete">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script type="module" src="dashboard.js"></script>
+
+</body>
+</html>

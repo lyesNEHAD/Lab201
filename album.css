@@ -1,0 +1,81 @@
+/* ─── PAGE 2 · YU SU BIO ───────────────────────────────────── */
+#page-yusu {
+  background: var(--white);
+  color: var(--text-dark);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Left: photo */
+.yusu-photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.yusu-photo img,
+.yusu-photo .photo-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.yusu-photo .photo-placeholder {
+  background: linear-gradient(160deg, #E8C4A0 0%, #C47040 40%, #8B3010 80%, #3D1205 100%);
+  min-height: 100vh;
+}
+
+/* Right: bio content */
+.yusu-bio {
+  padding: 5rem 3rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.yusu-bio h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  color: var(--rust);
+  font-style: italic;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.yusu-bio .bio-meta {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.yusu-bio p {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(26,10,4,0.75);
+  margin-bottom: 1rem;
+}
+
+.yusu-bio p + p { margin-top: 0; }
+
+.yusu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+
+.yusu-tag {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(200,75,26,0.35);
+  color: var(--rust-dark);
+}

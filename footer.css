@@ -1,0 +1,332 @@
+/* =============================
+   CSS VARIABLES
+   ============================= */
+:root {
+  --bg:           #0e0b09;
+  --text:         #f0ece8;
+  --text-muted:   #8a8078;
+  --accent:       #e8620a;
+  --input-border: rgba(240, 236, 232, 0.35);
+  --input-focus:  rgba(240, 236, 232, 0.7);
+}
+
+/* =============================
+   RESET & BASE
+   ============================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* =============================
+   SECTION WRAPPER
+   ============================= */
+.footer-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* =============================
+   TOPOGRAPHIC BACKGROUND
+   ============================= */
+.topo-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.topo-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+/* Vignette overlay */
+.footer-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 50%,
+      transparent 30%,
+      rgba(10, 7, 5, 0.55) 70%,
+      rgba(10, 7, 5, 0.85) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* =============================
+   FOOTER CONTENT
+   ============================= */
+.footer-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  padding: 60px 24px 100px;
+  width: 100%;
+  max-width: 700px;
+}
+
+/* =============================
+   NEWSLETTER
+   ============================= */
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+.newsletter-title {
+  font-size: clamp(15px, 2.2vw, 20px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.newsletter-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  max-width: 560px;
+}
+
+.newsletter-text p {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+/* Form row */
+.newsletter-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.input-wrap {
+  flex: 1;
+  border-bottom: 1.5px solid var(--input-border);
+  transition: border-color 0.2s;
+}
+
+.input-wrap:focus-within {
+  border-color: var(--input-focus);
+}
+
+.email-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 10px 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  caret-color: var(--accent);
+}
+
+.email-input::placeholder {
+  color: rgba(240, 236, 232, 0.4);
+}
+
+.btn-subscribe {
+  background: transparent;
+  border: 1.5px solid var(--text);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-subscribe:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* =============================
+   SOCIAL ICONS
+   ============================= */
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(240, 236, 232, 0.65);
+  transition: color 0.2s, transform 0.15s;
+  text-decoration: none;
+}
+
+.social-link svg {
+  width: 22px;
+  height: 22px;
+}
+
+.social-link:hover {
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+/* =============================
+   FOOTER CREDITS
+   ============================= */
+.footer-credits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-credits p {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.copyright {
+  margin-top: 6px;
+  font-size: 11px !important;
+  text-transform: none !important;
+  letter-spacing: 0.04em !important;
+  color: rgba(138, 128, 120, 0.7) !important;
+}
+
+/* =============================
+   COOKIE BAR
+   ============================= */
+.cookie-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(14, 11, 9, 0.96);
+  border-top: 1px solid rgba(240, 236, 232, 0.1);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.cookie-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.cookie-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.cookie-link:hover {
+  text-decoration: underline;
+}
+
+.cookie-btns {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cookie-refuse,
+.cookie-accept {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cookie-refuse {
+  background: transparent;
+  border: 1px solid rgba(240, 236, 232, 0.3);
+  color: var(--text-muted);
+}
+
+.cookie-refuse:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.cookie-accept {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #fff;
+}
+
+.cookie-accept:hover {
+  background: #d05508;
+}
+
+/* =============================
+   RESPONSIVE
+   ============================= */
+@media (max-width: 520px) {
+  .newsletter-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .btn-subscribe {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
+
+  .cookie-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px;
+  }
+}

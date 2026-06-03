@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Foundry — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body class="page-login">
+
+  <div class="login-wrap">
+
+    <div class="login-logo">
+      <span class="login-logo-name">Foundry</span>
+      <span class="login-logo-sub">Administration</span>
+    </div>
+
+    <div class="login-card">
+      <div class="login-title">Connexion</div>
+
+      <div class="field-group">
+        <label class="field-label" for="login-email">E-mail</label>
+        <input class="field-input" id="login-email" type="email" placeholder="admin@foundry.com" autocomplete="email"/>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="login-pass">Mot de passe</label>
+        <input class="field-input" id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+
+      <div class="login-error" id="login-error"></div>
+
+      <button class="btn-primary" id="login-btn">Se connecter</button>
+    </div>
+
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module">
+    import { auth, signInWithEmailAndPassword, onAuthStateChanged } from './firebase.js';
+
+    /* Redirect if already logged in */
+   onAuthStateChanged(user => {
+  if (user) window.location.href = 'dashboard.html';
+});
+
+    const loginBtn   = document.getElementById('login-btn');
+    const loginError = document.getElementById('login-error');
+    const emailEl    = document.getElementById('login-email');
+    const passEl     = document.getElementById('login-pass');
+
+    async function doLogin() {
+      loginError.textContent = '';
+      const email = emailEl.value.trim();
+      const pass  = passEl.value;
+      if (!email || !pass) {
+        loginError.textContent = 'Veuillez remplir tous les champs.';
+        return;
+      }
+      loginBtn.textContent = 'Connexion…';
+      loginBtn.disabled    = true;
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        window.location.href = 'dashboard.html';
+      } catch {
+        loginError.textContent = 'E-mail ou mot de passe incorrect.';
+        loginBtn.textContent = 'Se connecter';
+        loginBtn.disabled    = false;
+      }
+    }
+
+    loginBtn.addEventListener('click', doLogin);
+    passEl.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,315 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange:     #f07820;
+  --orange-bg:  #f08030;
+  --panel-bg:   #e87018;
+  --dark:       #0a0a14;
+  --text-light: #1a1a2a;
+  --white:      #ffffff;
+}
+
+/* ── FORCER PLEINE LARGEUR dans le container de main.js ── */
+#sec-foundry {
+  width: 100% !important;
+  min-width: 100% !important;
+  align-self: stretch !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── PAGE (section racine injectée) ── */
+.page {
+  background: var(--orange-bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  padding: 3rem 3rem 2rem;
+}
+
+/* ── SECTION PRINCIPALE ── */
+.album-section {
+  display: grid;
+  grid-template-columns: 310px 1fr 360px;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+
+/* ── POCHETTE ── */
+.album-cover {
+  position: relative;
+  width: 100%;
+  max-width: 310px;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cover-art {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle 55% at 50% 52%, #f5a040 0%, #d94010 42%, #7c1c04 68%, #0a0818 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: .3em;
+  color: #2a0808;
+  opacity: .85;
+}
+
+.cover-signature {
+  position: absolute;
+  bottom: .8rem;
+  right: .9rem;
+  font-size: .6rem;
+  line-height: 1.2;
+  color: rgba(255,255,255,.5);
+  text-align: center;
+}
+
+/* ── INFOS ALBUM ── */
+.album-info {
+  padding-top: .5rem;
+}
+
+.album-title {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--dark);
+  line-height: 1;
+  margin-bottom: .6rem;
+}
+
+.album-meta {
+  font-size: .9rem;
+  font-weight: 400;
+  color: var(--dark);
+  margin-bottom: 1.2rem;
+  opacity: .85;
+}
+
+.spotify-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--dark);
+  text-decoration: none;
+  margin-bottom: 1.8rem;
+}
+.spotify-link:hover { opacity: .75; }
+
+.spotify-icon {
+  width: 22px;
+  height: 22px;
+  color: #1db954;
+  flex-shrink: 0;
+}
+
+.lyrics {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.lyrics p {
+  font-size: .9rem;
+  font-weight: 300;
+  color: var(--dark);
+  line-height: 1.6;
+}
+.lyrics .faded {
+  opacity: .45;
+}
+
+/* ── TRACKLIST PANEL ── */
+.tracklist-panel {
+  background: var(--panel-bg);
+  border-radius: 10px;
+  padding: 1rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tracklist {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tracklist tr {
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  cursor: pointer;
+  transition: background .15s;
+}
+.tracklist tr:last-child { border-bottom: none; }
+.tracklist tr:hover { background: rgba(0,0,0,.06); }
+
+.track-num {
+  font-size: .8rem;
+  color: rgba(20,10,0,.6);
+  width: 24px;
+  padding: .5rem .3rem;
+  vertical-align: middle;
+}
+.track-name {
+  font-size: .85rem;
+  font-weight: 400;
+  color: var(--dark);
+  padding: .5rem .4rem;
+  vertical-align: middle;
+}
+.track-dur {
+  font-size: .8rem;
+  color: rgba(20,10,0,.7);
+  text-align: right;
+  padding: .5rem 0 .5rem .4rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ── PLAYER ── */
+.player {
+  border-top: 1px solid rgba(0,0,0,.12);
+  padding-top: .8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+.player-track {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+.player-artist {
+  font-size: .72rem;
+  color: rgba(20,10,0,.6);
+}
+
+.player-bar {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.player-time {
+  font-size: .7rem;
+  color: rgba(20,10,0,.65);
+  white-space: nowrap;
+}
+
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(0,0,0,.2);
+  border-radius: 99px;
+  position: relative;
+}
+.progress-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6%;
+  background: var(--dark);
+  border-radius: 99px;
+}
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--dark);
+  border-radius: 50%;
+}
+
+/* ── AUTRES ALBUMS ── */
+.other-albums {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.scroll-indicator span {
+  display: block;
+  width: 3px;
+  height: 28px;
+  background: rgba(20,10,0,.5);
+  border-radius: 2px;
+}
+
+.albums-grid {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: .5rem;
+  flex: 1;
+  scroll-behavior: smooth;
+}
+.albums-grid::-webkit-scrollbar { display: none; }
+
+.album-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.card-cover {
+  width: 185px;
+  height: 185px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.card-label {
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--dark);
+  text-align: center;
+}
+
+/* cover colors */
+.pink-cover  { background: #e87880; display: flex; align-items: center; justify-content: center; }
+.green-cover { background: linear-gradient(135deg, #506840, #384828); }
+.yellow-cover{ background: linear-gradient(135deg, #e8d060, #c8a830); }
+.orange-cover{ background: linear-gradient(135deg, #c84010, #902808); }
+.purple-cover{ background: linear-gradient(135deg, #c8a0c0, #a07898); }
+
+/* vinyl dans Bonita */
+.vinyl {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #555 18%, #222 18%, #222 48%, #555 48%);
+  box-shadow: 0 0 0 2px #888;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .album-section {
+    grid-template-columns: 1fr;
+  }
+  .album-cover { width: 100%; height: 300px; }
+  .cover-art { height: 300px; }
+}

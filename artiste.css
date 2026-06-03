@@ -1,0 +1,112 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red:      #b01010;
+  --bio:      #c45050;
+  --pink-bg:  #e8a9a3;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #ffffff;
+  color: var(--bio);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* ── SECTION ── */
+.artiste {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* ── VISUEL GAUCHE ── */
+.artiste-visual {
+  position: relative;
+}
+
+.photo-wrap {
+  position: relative;
+  z-index: 2;
+  width: 600px;
+  height: 600px;
+}
+
+.photo {
+  display: block;
+  width: 600px;
+  height: 600px;
+  object-fit: cover;
+  filter: saturate(.9);
+}
+
+/* bloc rose décalé en bas à droite */
+.pink-block {
+  position: absolute;
+  bottom: -3rem;
+  right: -2.5rem;
+  width: 48%;
+  height: 120px;
+  background: var(--pink-bg);
+  opacity: .75;
+  z-index: 1;
+}
+
+/* ── CONTENU DROITE ── */
+.artiste-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.artiste-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 6.5vw, 5.5rem);
+  font-weight: 300;
+  color: var(--red);
+  letter-spacing: .02em;
+  line-height: 1;
+}
+
+.pipe {
+  font-weight: 300;
+  margin-right: .1ch;
+  color: var(--red);
+}
+
+.artiste-bio {
+  font-size: clamp(.9rem, 1.3vw, 1.05rem);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--bio);
+  max-width: 48ch;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .artiste {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 3rem 1.5rem;
+  }
+
+  .pink-block {
+    right: 0;
+    bottom: -2rem;
+    width: 40%;
+    height: 80px;
+  }
+
+  .artiste-name {
+    font-size: 3rem;
+  }
+}
