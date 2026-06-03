@@ -1,12 +1,12 @@
-import { onSnapshotTourDates } from './firebase.js';
+import { onSnapshotTourDates } from './Firebase.js';
 
 // ─── PAGES À INJECTER ─────────────────────────────────────
 const pages = [
-  { html: 'index.html',   css: 'styles/index.css',   id: 'sec-home'    },
+  { html: './html/index.html',   css: 'styles/index.css',   id: 'sec-home'    },
   { html: 'artiste.html', css: 'styles/artiste.css', id: 'sec-artiste' },
-  { html: 'foundry.html', css: 'styles/foundry.css', id: 'sec-foundry' },
-  { html: 'tour.html',    css: 'styles/tour.css',    id: 'sec-tour'    },
-  { html: 'footer.html',  css: 'styles/footer.css',  id: 'sec-footer'  },
+  { html: './html/foundry.html', css: 'styles/foundry.css', id: 'sec-foundry' },
+  { html: './html/tour.html',    css: 'styles/tour.css',    id: 'sec-tour'    },
+  { html: './html/footer.html',  css: 'styles/footer.css',  id: 'sec-footer'  },
 ];
 
 function loadCSS(href) {
