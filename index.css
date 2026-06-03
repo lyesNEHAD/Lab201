@@ -29,7 +29,7 @@ nav {
   display: flex;
   align-items: center;
   padding: 0 2rem;
-  background: linear-gradient(135deg, #e05020 0%, #c93c1a 100%);
+  background: transparent;
 }
 
 .logo {

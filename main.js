@@ -52,7 +52,7 @@ function injectAnimationCSS() {
       transition: background 0.4s ease, box-shadow 0.4s ease !important;
     }
     nav.scrolled {
-      background: rgba(20, 6, 2, 0.97) !important;
+      background: rgba(20, 6, 2, 0.85) !important;
       box-shadow: 0 2px 24px rgba(0,0,0,0.5) !important;
       backdrop-filter: blur(12px) !important;
     }

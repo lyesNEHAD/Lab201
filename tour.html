@@ -15,80 +15,71 @@
 
     <h2 class="tour-title">TOUR DATES</h2>
 
-    <div class="tour-list">
-
-      <div class="tour-row">
-        <div class="tour-thumb">
-          <div class="thumb-art foundry-thumb">
-            <span class="thumb-label">FOUNDRY</span>
-          </div>
-        </div>
-        <div class="tour-info">
-          <p class="tour-event">YOYAKU RECORD STORE</p>
-          <p class="tour-album">Foundry</p>
-        </div>
-        <p class="tour-date">06/05</p>
-        <p class="tour-city">Paris, France</p>
-        <a class="tour-btn" href="#">TICKETS</a>
+    <div class="tour-list" id="tour-list">
+      <div class="tour-loading" id="tour-loading">
+        <div class="tour-spinner"></div>
+        Chargement des dates…
       </div>
-
-      <div class="tour-row">
-        <div class="tour-thumb">
-          <div class="thumb-art foundry-thumb">
-            <span class="thumb-label">FOUNDRY</span>
-          </div>
-        </div>
-        <div class="tour-info">
-          <p class="tour-event">YOYAKU RECORD STORE</p>
-          <p class="tour-album">Foundry</p>
-        </div>
-        <p class="tour-date">06/05</p>
-        <p class="tour-city">Paris, France</p>
-        <a class="tour-btn" href="#">TICKETS</a>
-      </div>
-
-      <div class="tour-row">
-        <div class="tour-thumb">
-          <div class="thumb-art green-thumb"></div>
-        </div>
-        <div class="tour-info">
-          <p class="tour-event">DGTL</p>
-          <p class="tour-album">Yellow River Blue</p>
-        </div>
-        <p class="tour-date">15/08</p>
-        <p class="tour-city">London, UK</p>
-        <a class="tour-btn" href="#">TICKETS</a>
-      </div>
-
-      <div class="tour-row">
-        <div class="tour-thumb">
-          <div class="thumb-art pink-thumb"></div>
-        </div>
-        <div class="tour-info">
-          <p class="tour-event">GOP TUN FESTIVAL</p>
-          <p class="tour-album">Preparation For Departure</p>
-        </div>
-        <p class="tour-date">01/09</p>
-        <p class="tour-city">London, UK</p>
-        <a class="tour-btn" href="#">TICKETS</a>
-      </div>
-
-      <div class="tour-row">
-        <div class="tour-thumb">
-          <div class="thumb-art dark-thumb"></div>
-        </div>
-        <div class="tour-info">
-          <p class="tour-event">GOP TUN FESTIVAL</p>
-          <p class="tour-album">Watermelon Woman</p>
-        </div>
-        <p class="tour-date">10/09</p>
-        <p class="tour-city">San Francisco, US</p>
-        <a class="tour-btn" href="#">TICKETS</a>
-      </div>
-
     </div>
 
   </section>
+
+  <script type="module">
+    import { onSnapshotTourDates } from './firebase.js';
+
+    const list    = document.getElementById('tour-list');
+    const loading = document.getElementById('tour-loading');
+
+    function formatDate(str) {
+      if (!str) return '—';
+      const [y, m, d] = str.split('-');
+      return `${d}/${m}`;
+    }
+
+    function renderDates(dates) {
+      list.querySelectorAll('.tour-row').forEach(r => r.remove());
+      loading.style.display = 'none';
+
+      if (!dates.length) {
+        list.innerHTML = `<div class="tour-empty">Aucune date annoncée pour le moment.</div>`;
+        return;
+      }
+
+      dates.forEach((d) => {
+        const row = document.createElement('div');
+        row.className = 'tour-row';
+        row.innerHTML = `
+          <div class="tour-info">
+            <p class="tour-event">${esc(d.event || '—')}</p>
+            <p class="tour-album">${esc(d.lieu || '')}</p>
+          </div>
+          <p class="tour-date">${formatDate(d.date)}</p>
+          <p class="tour-city">${esc(d.ville || '—')}, ${esc(d.pays || '—')}</p>
+          ${d.soldout
+            ? `<span class="tour-btn soldout">COMPLET</span>`
+            : `<a class="tour-btn" href="${esc(d.tickets || '#')}" target="_blank">TICKETS</a>`
+          }
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    onSnapshotTourDates(
+      (dates) => renderDates(dates),
+      (err)   => {
+        console.error(err);
+        loading.textContent = 'Erreur de chargement.';
+      }
+    );
+  </script>
 
 </body>
 </html>
