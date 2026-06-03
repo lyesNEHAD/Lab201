@@ -18,6 +18,18 @@ body {
   font-family: 'Cormorant Garamond', Georgia, serif;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#pages-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.page-section {
+  width: 100%;
+  flex-shrink: 0;
 }
 
 /* ── NAV ── */
