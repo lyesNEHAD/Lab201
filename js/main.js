@@ -2,7 +2,7 @@ import { onSnapshotTourDates } from './Firebase.js';
 
 // ─── PAGES À INJECTER ─────────────────────────────────────
 const pages = [
-  { html: './html/index.html',   css: 'styles/index.css',   id: 'sec-home'    },
+  { html: 'index.html',   css: 'styles/index.css',   id: 'sec-home'    },
   { html: 'artiste.html', css: 'styles/artiste.css', id: 'sec-artiste' },
   { html: './html/foundry.html', css: 'styles/foundry.css', id: 'sec-foundry' },
   { html: './html/tour.html',    css: 'styles/tour.css',    id: 'sec-tour'    },
