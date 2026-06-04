@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firebase Debug</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      background: #111;
+      color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 24px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 170px 90px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+      align-items: start;
+    }
+
+    .status {
+      font-weight: 700;
+    }
+
+    .ok { color: #64d18a; }
+    .fail { color: #ff6b6b; }
+    .wait { color: #f5c542; }
+    code { color: #ddd; word-break: break-word; }
+  </style>
+</head>
+<body>
+  <h1>Firebase Debug</h1>
+  <div id="results"></div>
+
+  <script type="module">
+    const results = document.getElementById('results');
+
+    function addRow(name, status, detail = '') {
+      const row = document.createElement('div');
+      row.className = 'row';
+
+      const nameEl = document.createElement('div');
+      nameEl.textContent = name;
+
+      const statusEl = document.createElement('div');
+      statusEl.className = `status ${status}`;
+      statusEl.textContent = status.toUpperCase();
+
+      const detailEl = document.createElement('code');
+      detailEl.textContent = detail;
+
+      row.append(nameEl, statusEl, detailEl);
+      results.appendChild(row);
+    }
+
+    function errorDetail(error) {
+      return `${error?.code || error?.name || 'error'}: ${error?.message || error}`;
+    }
+
+    addRow('Hostname', 'ok', location.hostname);
+    addRow('Page URL', 'ok', location.href);
+
+    try {
+      const firebase = await import('./js/firebase.js');
+      addRow('SDK import', 'ok', './js/firebase.js loaded');
+
+      try {
+        const dates = await firebase.fetchTourDatesRest();
+        addRow('REST read', 'ok', `${dates.length} tour_dates documents`);
+      } catch (error) {
+        addRow('REST read', 'fail', errorDetail(error));
+      }
+
+      try {
+        firebase.onAuthStateChanged(user => {
+          addRow('Auth state', 'ok', user ? `signed in: ${user.email || user.uid}` : 'signed out');
+        });
+      } catch (error) {
+        addRow('Auth state', 'fail', errorDetail(error));
+      }
+
+      try {
+        const stop = firebase.onSnapshotTourDates(
+          dates => {
+            addRow('Realtime read', 'ok', `${dates.length} tour_dates documents`);
+            stop();
+          },
+          error => addRow('Realtime read', 'fail', errorDetail(error))
+        );
+      } catch (error) {
+        addRow('Realtime read', 'fail', errorDetail(error));
+      }
+    } catch (error) {
+      addRow('SDK import', 'fail', errorDetail(error));
+    }
+  </script>
+</body>
+</html>

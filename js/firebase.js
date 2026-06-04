@@ -21,6 +21,8 @@ const firebaseConfig = {
   appId:             "1:889366412291:web:a0f6abadace39394946236"
 };
 
+export { firebaseConfig };
+
 const app  = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export async function signOut() {
@@ -70,4 +72,38 @@ export async function updateTourDate(id, data) {
 /** Supprimer une date */
 export async function deleteTourDate(id) {
   await deleteDoc(doc(db, 'tour_dates', id));
+}
+
+export async function fetchTourDatesRest() {
+  const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/tour_dates?key=${firebaseConfig.apiKey}`;
+  const res = await fetch(url);
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    const message = data?.error?.message || `HTTP ${res.status}`;
+    throw new Error(message);
+  }
+
+  return (data.documents || [])
+    .map(doc => ({
+      id: doc.name.split('/').pop(),
+      ...fromFirestoreFields(doc.fields || {}),
+    }))
+    .sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+}
+
+function fromFirestoreFields(fields) {
+  return Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => [key, fromFirestoreValue(value)])
+  );
+}
+
+function fromFirestoreValue(value) {
+  if ('stringValue' in value) return value.stringValue;
+  if ('booleanValue' in value) return value.booleanValue;
+  if ('integerValue' in value) return Number(value.integerValue);
+  if ('doubleValue' in value) return value.doubleValue;
+  if ('timestampValue' in value) return value.timestampValue;
+  if ('nullValue' in value) return null;
+  return '';
 }

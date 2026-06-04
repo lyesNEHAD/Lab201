@@ -273,8 +273,7 @@ function initTourDates() {
         .replace(/"/g, '&quot;');
     }
 
-    import('./firebase.js').then(({ onSnapshotTourDates }) => {
-      onSnapshotTourDates((dates) => {
+    function renderDates(dates) {
       list.querySelectorAll('.tour-row, .tour-empty').forEach(r => r.remove());
       const loading = document.getElementById('tour-loading');
       if (loading) loading.style.display = 'none';
@@ -309,16 +308,26 @@ function initTourDates() {
         row.classList.add('reveal', `reveal-delay-${Math.min(i + 1, 5)}`);
       });
       initReveal();
+    }
 
-      }, (err) => {
+    function showTourError(err) {
+      console.error(err);
+      const loading = document.getElementById('tour-loading');
+      if (loading) loading.textContent = 'Erreur de chargement.';
+    }
+
+    function loadTourDatesRest(fetchTourDatesRest) {
+      return fetchTourDatesRest().then(renderDates).catch(showTourError);
+    }
+
+    import('./firebase.js').then(({ onSnapshotTourDates, fetchTourDatesRest }) => {
+      onSnapshotTourDates(renderDates, (err) => {
         console.error(err);
-        const loading = document.getElementById('tour-loading');
-        if (loading) loading.textContent = 'Erreur de chargement.';
+        loadTourDatesRest(fetchTourDatesRest);
       });
     }).catch((err) => {
       console.error('Impossible de charger Firebase:', err);
-      const loading = document.getElementById('tour-loading');
-      if (loading) loading.textContent = 'Erreur de chargement.';
+      showTourError(err);
     });
   }, 300);
 }
