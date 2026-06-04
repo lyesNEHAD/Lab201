@@ -147,9 +147,9 @@ nav {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Cinzel', serif;
+  font-family: 'Metropolis', sans-serif;
   font-size: clamp(7rem, 22vw, 18rem);
-  font-weight: 700;
+  font-weight: 550;
   color: var(--rust);
   letter-spacing: -.02em;
   white-space: nowrap;
