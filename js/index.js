@@ -5,7 +5,7 @@ const BASE = new URL('../', import.meta.url).href;
 
 // ─── PAGES À INJECTER ─────────────────────────────────────
 const pages = [
-  { html: `${BASE}main.html`,        css: `${BASE}styles/main.css`,   id: 'sec-home'    },
+  { html: `${BASE}main.html`,        css: `${BASE}styles/index.css`,   id: 'sec-home'    },
   { html: `${BASE}artiste.html`,      css: `${BASE}styles/artiste.css`, id: 'sec-artiste' },
   { html: `${BASE}html/foundry.html`, css: `${BASE}styles/foundry.css`, id: 'sec-foundry' },
   { html: `${BASE}html/tour.html`,    css: `${BASE}styles/tour.css`,    id: 'sec-tour'    },
