@@ -1,5 +1,3 @@
-import { onSnapshotTourDates } from './firebase.js'; 
-
 // ─── BASE PATH (works locally AND on GitHub Pages subfolder) ──
 const BASE = new URL('../', import.meta.url).href;
 
@@ -275,7 +273,8 @@ function initTourDates() {
         .replace(/"/g, '&quot;');
     }
 
-    onSnapshotTourDates((dates) => {
+    import('./firebase.js').then(({ onSnapshotTourDates }) => {
+      onSnapshotTourDates((dates) => {
       list.querySelectorAll('.tour-row, .tour-empty').forEach(r => r.remove());
       const loading = document.getElementById('tour-loading');
       if (loading) loading.style.display = 'none';
@@ -311,7 +310,16 @@ function initTourDates() {
       });
       initReveal();
 
-    }, (err) => console.error(err));
+      }, (err) => {
+        console.error(err);
+        const loading = document.getElementById('tour-loading');
+        if (loading) loading.textContent = 'Erreur de chargement.';
+      });
+    }).catch((err) => {
+      console.error('Impossible de charger Firebase:', err);
+      const loading = document.getElementById('tour-loading');
+      if (loading) loading.textContent = 'Erreur de chargement.';
+    });
   }, 300);
 }
 
