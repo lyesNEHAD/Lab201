@@ -1,6 +1,5 @@
 /* ════════════════════════════════════════════════════════
    dashboard.js — Tour dates CRUD logic
-  
 ════════════════════════════════════════════════════════ */
 
 import {
@@ -10,7 +9,7 @@ import {
   addTourDate,
   updateTourDate,
   deleteTourDate,
-} from './Firebase.js';
+} from 'firebase.js';
 
 /* ════════════════════════════════════════════════════════
    STATE
@@ -47,93 +46,47 @@ const fSoldout = document.getElementById('f-soldout');
 const citiesList = document.getElementById('cities-list');
 
 const citySuggestions = {
-
-  France: [
-    'Paris','Lyon','Marseille','Nice','Lille',
-    'Bordeaux','Toulouse','Nantes','Strasbourg'
-  ],
-
-  Belgique: [
-    'Bruxelles','Liège','Anvers','Gand'
-  ],
-
-  Suisse: [
-    'Genève','Zurich','Lausanne','Berne'
-  ],
-
-  Canada: [
-    'Montréal','Toronto','Vancouver','Québec','Ottawa'
-  ],
-
-  Espagne: [
-    'Madrid','Barcelone','Valence','Séville','Malaga'
-  ],
-
-  Italie: [
-    'Rome','Milan','Naples','Turin','Venise'
-  ],
-
-  USA: [
-    'New York','Los Angeles','Miami','Chicago','Las Vegas'
-  ],
-
-  Allemagne: [
-    'Berlin','Munich','Hambourg','Cologne'
-  ]
-
+  France:    ['Paris','Lyon','Marseille','Nice','Lille','Bordeaux','Toulouse','Nantes','Strasbourg'],
+  Belgique:  ['Bruxelles','Liège','Anvers','Gand'],
+  Suisse:    ['Genève','Zurich','Lausanne','Berne'],
+  Canada:    ['Montréal','Toronto','Vancouver','Québec','Ottawa'],
+  Espagne:   ['Madrid','Barcelone','Valence','Séville','Malaga'],
+  Italie:    ['Rome','Milan','Naples','Turin','Venise'],
+  USA:       ['New York','Los Angeles','Miami','Chicago','Las Vegas'],
+  Allemagne: ['Berlin','Munich','Hambourg','Cologne'],
 };
 
-fPays.addEventListener('click', () => {
-  fPays.select();
-});
-
-fVille.addEventListener('click', () => {
-  fVille.select();
-});
+fPays.addEventListener('click', () => fPays.select());
+fVille.addEventListener('click', () => fVille.select());
 
 fPays.addEventListener('input', () => {
-  
-
   const country = fPays.value.trim();
-
   citiesList.innerHTML = '';
-
   fVille.placeholder = 'Ville';
-
   if (!citySuggestions[country]) return;
-
   if (citySuggestions[country].length > 0) {
     fVille.placeholder = citySuggestions[country][0];
   }
-
   citySuggestions[country].forEach(city => {
-
     const option = document.createElement('option');
-
     option.value = city;
-
     citiesList.appendChild(option);
-
   });
-
 });
 
 /* ════════════════════════════════════════════════════════
-   GUARD + LISTENER AUTH — un seul onAuthStateChanged
-   ✅ CORRIGÉ : deux abonnements fusionnés en un seul
+   AUTH GUARD
 ════════════════════════════════════════════════════════ */
 const unsubscribeAuth = onAuthStateChanged(user => {
   if (!user) {
-    // Non connecté → redirection login
-    window.location.href = 'index.html';
+    window.location.href = 'admin.html';
   } else if (!unsubscribeDates) {
-    // Connecté et listener pas encore démarré → on démarre
     listenDates();
   }
 });
 
 /* ════════════════════════════════════════════════════════
-   AUTH — logout
+   LOGOUT
 ════════════════════════════════════════════════════════ */
 logoutBtn.addEventListener('click', async () => {
   if (unsubscribeDates) unsubscribeDates();
@@ -143,7 +96,7 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 /* ════════════════════════════════════════════════════════
-   SUPABASE — real-time listener
+   FIREBASE — real-time listener
 ════════════════════════════════════════════════════════ */
 function listenDates() {
   unsubscribeDates = onSnapshotTourDates(
@@ -153,7 +106,7 @@ function listenDates() {
       renderTable(searchInput.value);
     },
     (err) => {
-      toast('Erreur de chargement Supabase', 'error');
+      toast('Erreur de chargement Firebase', 'error');
       console.error(err);
     }
   );
@@ -231,8 +184,6 @@ function renderTable(filter = '') {
     </tr>
   `).join('');
 
-  // ✅ CORRIGÉ : data-edit et data-delete sont des strings HTML,
-  //    on passe directement l'id string — la comparaison se fait avec String() dans editDate/askDelete
   tbody.querySelectorAll('[data-edit]').forEach(btn =>
     btn.addEventListener('click', () => editDate(btn.dataset.edit))
   );
@@ -271,7 +222,7 @@ modalCancel.addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
 
 /* ════════════════════════════════════════════════════════
-   SAVE — add or update
+   SAVE
 ════════════════════════════════════════════════════════ */
 modalSave.addEventListener('click', async () => {
   const data = {
@@ -311,21 +262,15 @@ modalSave.addEventListener('click', async () => {
 });
 
 /* ════════════════════════════════════════════════════════
-   EDIT
-   ✅ CORRIGÉ : comparaison String() vs String() pour éviter
-      le mismatch number (Supabase) vs string (dataset HTML)
+   EDIT / DELETE
 ════════════════════════════════════════════════════════ */
 function editDate(id) {
   const d = allDates.find(x => String(x.id) === String(id));
   if (d) openModal('edit', d);
 }
 
-/* ════════════════════════════════════════════════════════
-   DELETE — confirm modal
-   ✅ CORRIGÉ : même fix de type pour deleteId
-════════════════════════════════════════════════════════ */
 function askDelete(id) {
-  deleteId = String(id);   // ✅ on normalise dès la capture
+  deleteId = String(id);
   confirmOverlay.classList.add('open');
 }
 
