@@ -1,15 +1,15 @@
 import { onSnapshotTourDates } from './Firebase.js';
 
-// ─── BASE PATH (remonte d'un niveau depuis js/ vers la racine) ──
+// ─── BASE PATH ─────────────────────────────────────────────
 const BASE = new URL('../', import.meta.url).href;
 
 // ─── PAGES À INJECTER ─────────────────────────────────────
 const pages = [
-  { html: `${BASE}index.html`,        css: 'styles/index.css',   id: 'sec-home'    },
-  { html: `${BASE}artiste.html`,      css: 'styles/artiste.css', id: 'sec-artiste' },
-  { html: `${BASE}html/foundry.html`, css: 'styles/foundry.css', id: 'sec-foundry' },
-  { html: `${BASE}html/tour.html`,    css: 'styles/tour.css',    id: 'sec-tour'    },
-  { html: `${BASE}html/footer.html`,  css: 'styles/footer.css',  id: 'sec-footer'  },
+  { html: `${BASE}index.html`,        css: `${BASE}styles/index.css`,   id: 'sec-home'    },
+  { html: `${BASE}artiste.html`,      css: `${BASE}styles/artiste.css`, id: 'sec-artiste' },
+  { html: `${BASE}html/foundry.html`, css: `${BASE}styles/foundry.css`, id: 'sec-foundry' },
+  { html: `${BASE}html/tour.html`,    css: `${BASE}styles/tour.css`,    id: 'sec-tour'    },
+  { html: `${BASE}html/footer.html`,  css: `${BASE}styles/footer.css`,  id: 'sec-footer'  },
 ];
 
 function loadCSS(href) {
@@ -30,30 +30,24 @@ function injectAnimationCSS() {
       transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
     .reveal-left {
       opacity: 0;
       transform: translateX(-40px);
       transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
     }
     .reveal-left.visible { opacity: 1; transform: translateX(0); }
-
     .reveal-right {
       opacity: 0;
       transform: translateX(40px);
       transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
     }
     .reveal-right.visible { opacity: 1; transform: translateX(0); }
-
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
     .reveal-delay-5 { transition-delay: 0.5s; }
-
-    nav {
-      transition: background 0.4s ease, box-shadow 0.4s ease !important;
-    }
+    nav { transition: background 0.4s ease, box-shadow 0.4s ease !important; }
     nav.scrolled {
       background: rgba(20, 6, 2, 0.85) !important;
       box-shadow: 0 2px 24px rgba(0,0,0,0.5) !important;
@@ -71,15 +65,8 @@ function injectAnimationCSS() {
     nav .nav-links a:hover::after,
     nav .nav-links a.active::after { width: 100%; }
     nav .nav-links a.active { opacity: 1 !important; }
-
-    .tour-row {
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s !important;
-    }
-    .tour-row:hover {
-      transform: translateX(6px) !important;
-      box-shadow: -4px 0 0 0 #f07820 !important;
-    }
-
+    .tour-row { transition: background 0.2s, transform 0.2s, box-shadow 0.2s !important; }
+    .tour-row:hover { transform: translateX(6px) !important; box-shadow: -4px 0 0 0 #f07820 !important; }
     .tour-btn { position: relative; overflow: hidden; }
     .tour-btn::before {
       content: '';
@@ -89,24 +76,11 @@ function injectAnimationCSS() {
       transition: transform 0.3s ease;
     }
     .tour-btn:hover::before { transform: translateX(0); }
-
-    .social-link svg {
-      transition: transform 0.2s ease, color 0.2s ease !important;
-    }
-    .social-link:hover svg {
-      transform: scale(1.2) translateY(-2px) !important;
-    }
-
-    .album-card {
-      transition: transform 0.25s cubic-bezier(.22,1,.36,1);
-    }
+    .social-link svg { transition: transform 0.2s ease, color 0.2s ease !important; }
+    .social-link:hover svg { transform: scale(1.2) translateY(-2px) !important; }
+    .album-card { transition: transform 0.25s cubic-bezier(.22,1,.36,1); }
     .album-card:hover { transform: translateY(-6px); }
-
-    .tracklist tr.active .track-name {
-      font-weight: 700 !important;
-      color: #c93c1a !important;
-    }
-
+    .tracklist tr.active .track-name { font-weight: 700 !important; color: #c93c1a !important; }
     .btn-primary { position: relative; overflow: hidden; }
     .btn-primary::after {
       content: '';
@@ -117,16 +91,11 @@ function injectAnimationCSS() {
       transition: transform 0.3s ease;
     }
     .btn-primary:hover::after { transform: scaleX(1); }
-
-    a[data-target].active {
-      opacity: 1 !important;
-      font-weight: 500 !important;
-    }
+    a[data-target].active { opacity: 1 !important; font-weight: 500 !important; }
   `;
   document.head.appendChild(style);
 }
 
-// ─── SCROLL REVEAL ────────────────────────────────────────
 function initReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -137,7 +106,6 @@ function initReveal() {
       }
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
     observer.observe(el);
   });
@@ -147,33 +115,27 @@ function addRevealClasses() {
   document.querySelectorAll('.tour-row').forEach((row, i) => {
     row.classList.add('reveal', `reveal-delay-${Math.min(i + 1, 5)}`);
   });
-
   document.querySelectorAll('.album-card').forEach((card, i) => {
     card.classList.add('reveal', `reveal-delay-${Math.min(i + 1, 5)}`);
   });
-
   const artisteVisual = document.querySelector('.artiste-visual');
   const artisteContent = document.querySelector('.artiste-content');
   if (artisteVisual) artisteVisual.classList.add('reveal-left');
   if (artisteContent) artisteContent.classList.add('reveal-right');
-
   const newsletterEl = document.querySelector('.newsletter');
   const socialEl = document.querySelector('.social-icons');
   const creditsEl = document.querySelector('.footer-credits');
   if (newsletterEl) newsletterEl.classList.add('reveal');
   if (socialEl) socialEl.classList.add('reveal', 'reveal-delay-2');
   if (creditsEl) creditsEl.classList.add('reveal', 'reveal-delay-3');
-
   const albumInfo = document.querySelector('.album-info');
   const tracklistPanel = document.querySelector('.tracklist-panel');
   if (albumInfo) albumInfo.classList.add('reveal-right');
   if (tracklistPanel) tracklistPanel.classList.add('reveal-right', 'reveal-delay-2');
-
   const tourTitle = document.querySelector('.tour-title');
   if (tourTitle) tourTitle.classList.add('reveal');
 }
 
-// ─── NAVBAR SCROLL ────────────────────────────────────────
 function initNavScroll() {
   const nav = document.querySelector('nav');
   if (!nav) return;
@@ -182,7 +144,6 @@ function initNavScroll() {
   }, { passive: true });
 }
 
-// ─── NAV SMOOTH SCROLL ────────────────────────────────────
 function initNav() {
   const sectionIds = ['sec-home', 'sec-artiste', 'sec-foundry', 'sec-tour'];
   document.querySelectorAll('.nav-links a').forEach((link, i) => {
@@ -197,7 +158,6 @@ function initNav() {
   });
 }
 
-// ─── SCROLL SPY ───────────────────────────────────────────
 function initScrollSpy() {
   const sections = document.querySelectorAll('.page-section[id]');
   const navLinks = document.querySelectorAll('.nav-links a[data-target]');
@@ -212,7 +172,6 @@ function initScrollSpy() {
   sections.forEach(s => observer.observe(s));
 }
 
-// ─── MINI PLAYER ──────────────────────────────────────────
 function initMiniPlayer() {
   document.querySelectorAll('.tracklist tr').forEach(track => {
     track.addEventListener('click', () => {
@@ -233,7 +192,6 @@ function initMiniPlayer() {
   });
 }
 
-// ─── AUTO SCROLL ALBUMS ───────────────────────────────────
 function initAlbumsScroll() {
   const interval = setInterval(() => {
     const grid = document.querySelector('.albums-grid');
@@ -246,15 +204,12 @@ function initAlbumsScroll() {
     setInterval(() => {
       if (paused) return;
       scrollAmount += 1;
-      if (scrollAmount >= grid.scrollWidth - grid.clientWidth) {
-        scrollAmount = 0;
-      }
+      if (scrollAmount >= grid.scrollWidth - grid.clientWidth) scrollAmount = 0;
       grid.scrollLeft = scrollAmount;
     }, 20);
   }, 200);
 }
 
-// ─── TOUR DATES FIREBASE ──────────────────────────────────
 function initTourDates() {
   const interval = setInterval(() => {
     const list = document.getElementById('tour-list');
@@ -310,12 +265,10 @@ function initTourDates() {
         row.classList.add('reveal', `reveal-delay-${Math.min(i + 1, 5)}`);
       });
       initReveal();
-
     }, (err) => console.error(err));
   }, 300);
 }
 
-// ─── CHARGER LES PAGES ────────────────────────────────────
 async function loadPages() {
   injectAnimationCSS();
 
@@ -342,7 +295,6 @@ async function loadPages() {
             document.body.insertBefore(nav, container);
           }
         }
-
         content.querySelectorAll('nav').forEach(n => n.remove());
         content.id = page.id;
         content.classList.add('page-section');
