@@ -1,12 +1,15 @@
 import { onSnapshotTourDates } from './Firebase.js';
 
+// ─── BASE PATH (remonte d'un niveau depuis js/ vers la racine) ──
+const BASE = new URL('../', import.meta.url).href;
+
 // ─── PAGES À INJECTER ─────────────────────────────────────
 const pages = [
-  { html: 'index.html',   css: 'styles/index.css',   id: 'sec-home'    },
-  { html: 'artiste.html', css: 'styles/artiste.css', id: 'sec-artiste' },
-  { html: './html/foundry.html', css: 'styles/foundry.css', id: 'sec-foundry' },
-  { html: './html/tour.html',    css: 'styles/tour.css',    id: 'sec-tour'    },
-  { html: './html/footer.html',  css: 'styles/footer.css',  id: 'sec-footer'  },
+  { html: `${BASE}index.html`,        css: 'styles/index.css',   id: 'sec-home'    },
+  { html: `${BASE}artiste.html`,      css: 'styles/artiste.css', id: 'sec-artiste' },
+  { html: `${BASE}html/foundry.html`, css: 'styles/foundry.css', id: 'sec-foundry' },
+  { html: `${BASE}html/tour.html`,    css: 'styles/tour.css',    id: 'sec-tour'    },
+  { html: `${BASE}html/footer.html`,  css: 'styles/footer.css',  id: 'sec-footer'  },
 ];
 
 function loadCSS(href) {
@@ -333,7 +336,6 @@ async function loadPages() {
       const content = doc.querySelector('section') || doc.querySelector('main');
 
       if (content) {
-        // Extraire et injecter la nav depuis index.html une seule fois
         if (page.id === 'sec-home') {
           const nav = doc.querySelector('nav');
           if (nav && !document.querySelector('nav')) {

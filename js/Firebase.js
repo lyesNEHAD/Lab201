@@ -1,4 +1,4 @@
-import { onSnapshotTourDates } from './Firebase.js';
+import { onSnapshotTourDates } from 'firebase.js';
 
 // ─── BASE PATH (works locally AND on GitHub Pages subfolder) ──
 const BASE = new URL('.', import.meta.url).href;
