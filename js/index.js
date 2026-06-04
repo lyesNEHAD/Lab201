@@ -195,6 +195,34 @@ function initNav() {
   });
 }
 
+function initMobileMenu() {
+  const nav = document.querySelector('nav');
+  const toggle = document.querySelector('.nav-toggle');
+  if (!nav || !toggle) return;
+
+  const setOpen = (open) => {
+    nav.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(!nav.classList.contains('menu-open'));
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 600) setOpen(false);
+  });
+}
+
 // ─── SCROLL SPY ───────────────────────────────────────────
 function initScrollSpy() {
   const sections = document.querySelectorAll('.page-section[id]');
@@ -375,6 +403,7 @@ async function loadPages() {
   addRevealClasses();
   initReveal();
   initNav();
+  initMobileMenu();
   initNavScroll();
   initScrollSpy();
   initMiniPlayer();
