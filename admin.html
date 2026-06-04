@@ -10,40 +10,28 @@
 <body class="page-login">
 
   <div class="login-wrap">
-
     <div class="login-logo">
       <span class="login-logo-name">Foundry</span>
       <span class="login-logo-sub">Administration</span>
     </div>
-
     <div class="login-card">
       <div class="login-title">Connexion</div>
-
       <div class="field-group">
         <label class="field-label" for="login-email">E-mail</label>
         <input class="field-input" id="login-email" type="email" placeholder="admin@foundry.com" autocomplete="email"/>
       </div>
-
       <div class="field-group">
         <label class="field-label" for="login-pass">Mot de passe</label>
         <input class="field-input" id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
       </div>
-
       <div class="login-error" id="login-error"></div>
-
       <button class="btn-primary" id="login-btn">Se connecter</button>
     </div>
-
   </div>
 
   <script type="module">
-    import {
-      auth,
-      signInWithEmailAndPassword,
-      onAuthStateChanged
-    } from 'js/firebase.js';
+    import { auth, signInWithEmailAndPassword, onAuthStateChanged } from './js/firebase.js';
 
-    /* Redirect si déjà connecté */
     onAuthStateChanged(user => {
       if (user) window.location.href = 'dashboard.html';
     });

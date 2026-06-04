@@ -9,7 +9,7 @@ import {
   addTourDate,
   updateTourDate,
   deleteTourDate,
-} from 'firebase.js';
+} from './firebase.js';
 
 /* ════════════════════════════════════════════════════════
    STATE
