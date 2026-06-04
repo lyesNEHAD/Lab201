@@ -54,11 +54,24 @@
       try {
         await signInWithEmailAndPassword(auth, email, pass);
         window.location.href = 'dashboard.html';
-      } catch {
-        loginError.textContent = 'E-mail ou mot de passe incorrect.';
+      } catch (e) {
+        loginError.textContent = firebaseLoginMessage(e);
         loginBtn.textContent = 'Se connecter';
         loginBtn.disabled    = false;
       }
+    }
+
+    function firebaseLoginMessage(error) {
+      if (error?.code === 'auth/unauthorized-domain') {
+        return 'Domaine non autorisé dans Firebase Auth.';
+      }
+      if (error?.code === 'auth/network-request-failed') {
+        return 'Connexion Firebase impossible depuis ce domaine.';
+      }
+      if (error?.code === 'auth/invalid-credential' || error?.code === 'auth/wrong-password' || error?.code === 'auth/user-not-found') {
+        return 'E-mail ou mot de passe incorrect.';
+      }
+      return `Erreur Firebase: ${error?.code || 'connexion refusée'}`;
     }
 
     loginBtn.addEventListener('click', doLogin);
